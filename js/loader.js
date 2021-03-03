@@ -18,7 +18,7 @@ define(['ko'], ko => {
 
     });
 
-    ko.components.register('test-component', {
+    ko.components.register('test-buttons', {
 
         template: { require: 'text!../modules/fd-button/fd-button.html' },
         viewModel: { require: '../modules/fd-button/fd-button' }
