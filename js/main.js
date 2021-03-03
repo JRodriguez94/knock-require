@@ -21,6 +21,6 @@ require.config({
 // ? se pasa como parametro, no se puede acceder al archivo y
 // ? por lo tanto no sigue el flujo de ejecución
 require(['ko',  'loader'], (ko) => {
-    console.log('Entra al primer require con ko: ', ko);
-    // console.log('Loader: ', loader)
+    console.log('Entra al require de MAIN: ');
+    // console.log('Entra al require de MAIN: ', ko);
 });

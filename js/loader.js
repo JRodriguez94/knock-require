@@ -1,54 +1,50 @@
 
-// ? Define que es declarado como funcion anonima, es decir,
-// ? Será ejecutado al hacer instancia del archivo, sin embargo 
-// ? No podrá se invocado porterior mente.
+// ? Este define es ejecutado al ser requerido en el archivo Main.js
+// ? Es declarado como una función anonima, de forma en que será
+// ? Ejecutado al hacer instancia dle archico (ser requerido) sin embargo..
+// | No puede ser invocado de forma posterior a la carga
 
 define(['ko'], ko => {
-    console.log('Está entrando al define(?')
+    console.log('Está entrando al define del LOADER')
 
-    // ? Se registra el componente 'test-component'
-    // ? El template se encuentra aislado dentro del directorio
-    // ? 'Modulos'. El viewModel es declarado en este mismo archivo
-    // ? La idea es que pueda ser cargado por require como el view
-    // ? Sin embargo se enceuntra aun en proceso ese paso.
+    // ? Se registran los omponentes 'test-component' y 'test-component'
+    // ? Se logró aislar el template y el viewModel del loader principal
+    // ? De forma que se cargan como un modulo AMD como tal al ser requeridos.
 
     ko.components.register('test-component', {
-        // template: '<h1>Hola, este es un componente dinamico basico</h1>'
+
         template: { require: 'text!../modules/test/test.html' },
-        viewModel: function(params) {
-            console.log('Está entrando al viewModel estático')
-            console.log('Params(? ', params)
+        viewModel: { require: '../modules/test/test' }
 
-            let self = this;
-
-            // ? Estas son las funciones que se ejecutan meduante el bindeo
-            // ? Directamente en la definición del componente (en el view)
-            self.onClick1 = () => {
-                console.log('Está entrando al onclick 1');
-
-                // ? Es la accion definida en este mismo archivo y que
-                // ? Es pasada como parametro al componente en cuestion
-                // ? Por el momento se encuentra definida en este mimo archivo
-                // ? Sin embargo se espera que sea modulada al dividir el viewModel
-                // ? De esta definición del componente.
-                params.action();
-            }
-
-            self.onClick2 = () => {
-                console.log('Está entrando al onclick 2');
-                params.action();
-            }
-
-        }
     });
+
+    ko.components.register('test-component', {
+
+        template: { require: 'text!../modules/fd-button/fd-button.html' },
+        viewModel: { require: '../modules/fd-button/fd-button' }
+
+    });
+
+    // ? Despues de registrar los componentes, se aplica el bindeo 
+    // ? Para que los componentes puedans ser cargados al ser requeridos
+    // ? en la vista (index.html en este caso)
+    // ? Se le esta pasando como parametro la instancia de la funcion mainViewModel
+    // ? Esto con el proposito de que los metodos registrados en dicha funcion
+    // ? Puedan ser accedidos desde cualquier componente registrado en este mismo scope
 
     ko.applyBindings(new mainViewModel());
 
 });
 
-function mainViewModel() {
+// ? Funccion en donde se peuden declarar metodos y propiedades
+// ? Los cuales pueden ser accedidos por cualuqier modulo registrado
+// ? Dentro de este mismo scope. En este caso 'test-component' y 'test-component'
+
+function mainViewModel(saludo) {
     let self = this;
-    self.onTest = () => {
-        console.log('Está entrando al onTest desde el main loader :d');
+    self.onTest = saludo => {
+
+        console.log('Parametro que llega al mainViewModel: ', saludo)
+
     }
 }
