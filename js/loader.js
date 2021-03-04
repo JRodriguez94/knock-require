@@ -10,6 +10,11 @@ define(['ko'], ko => {
     // ? Se registran los omponentes 'test-component' y 'test-component'
     // ? Se logró aislar el template y el viewModel del loader principal
     // ? De forma que se cargan como un modulo AMD como tal al ser requeridos.
+    // * El path del template tiene que comenzar con "text!" para que pueda ser leido
+    // * E interpretado por el plugin text.js 
+    // | De otra forma lanzará un error y no cargara la vista del componente
+    // * la extención .html es necesario en el template, más no lo es el .js
+    // * En el caso del template, este puede ser omitido.
 
     ko.components.register('test-component', {
 
